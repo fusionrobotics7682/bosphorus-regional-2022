@@ -5,10 +5,27 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveCommand;
+import frc.robot.commands.AxisArcadeDriveCommand;
+import frc.robot.commands.ButtonForwardDriveCommand;
+import frc.robot.commands.ButtonGetBallCommand;
+import frc.robot.commands.ButtonGetBallWithFeederCommand;
+import frc.robot.commands.ButtonGetTheReadyBall;
+import frc.robot.commands.ButtonGoLowerHubPosition;
+import frc.robot.commands.ButtonGoTerminalCommand;
+import frc.robot.commands.ButtonGoUpperHubPosition;
+import frc.robot.commands.ButtonThrowBallCommand;
+import frc.robot.commands.ButtonThrowBallToUpperHub;
+import frc.robot.commands.GetInFeederCommand;
+import frc.robot.commands.GoTerminalCommand;
+import frc.robot.commands.ThrowBallToUpperHub;
+import frc.robot.commands.ThrowBallWithFeederCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,23 +36,59 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-
-  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
+  Joystick joystick = new Joystick(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem));
+    
+    driveSubsystem.setDefaultCommand(new AxisArcadeDriveCommand(driveSubsystem, 0.5, joystick.getX(), 0.5, joystick.getZ()));
+
   }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a 
+   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    // Running sequential
+    /*new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
+    new JoystickButton(joystick, 6).whenActive(new ThrowBallWithFeederCommand());
+
+    // Running Parallel
+    new JoystickButton(joystick, 1).whenActive(new ParallelCommandGroup(new ButtonGetBallCommand(), new ButtonThrowBallCommand()));
+    new JoystickButton(joystick, 2).whenActive(new ParallelCommandGroup(new ButtonThrowBallCommand(), new GetInFeederCommand()));
+
+    // Go a placement with path planning
+
+    // Target : Hangar
+    new JoystickButton(joystick, 3).whenActive(new ButtonGoHangar());
+
+    // Target : Upper Hub Position
+    new JoystickButton(joystick, 4).whenActive(new ButtonGoUpperHubPosition());
+
+    // Target : Lower Hub Position
+    new JoystickButton(joystick, 7).whenActive(new ButtonGoLowerHubPosition());
+*/
+    // Unit Process
+
+   /* // Shooter Mechanism
+    new JoystickButton(joystick, 8).whenActive(new ButtonThrowBallCommand());
+
+    // Intake Mechanism
+    new JoystickButton(joystick, 9).whenActive(new ButtonGetBallCommand());
+
+    // Feeder Mechansim
+    new JoystickButton(joystick, 10).whenActive(new GetInFeederCommand());
+    */
+
+    new JoystickButton(joystick, 4).whenPressed(new ButtonForwardDriveCommand());
+  }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -43,7 +96,15 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return driveCommand;
+    
+    // 1 Ball point and returning terminal
+    // return new SequentialCommandGroup(new ButtonGoUpperHubPosition(), new ButtonThrowBallToUpperHub(), new ButtonGoTerminalCommand());
+
+    // 2 Ball point  and returning terminal
+    //return new SequentialCommandGroup(new ButtonGetTheReadyBall(), new ButtonGoUpperHubPosition(), new ButtonThrowBallToUpperHub(), new ButtonGoTerminalCommand());
+
+    // 1 Ball point
+    //return new SequentialCommandGroup(new ButtonThrowBallCommand());
+    return null;
   }
 }
