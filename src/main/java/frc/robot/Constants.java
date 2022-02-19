@@ -14,6 +14,7 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DRIVE_CONSTANTS{
+
         public static final int FRONT_LEFT_MOTOR_PIN = 1;
         public static final int FRONT_RIGHT_MOTOR_PIN = 2;
         public static final int REAR_LEFT_MOTOR_PIN = 3;
@@ -37,16 +38,18 @@ public final class Constants {
 
     public static final class INTAKE_CONSTANTS{
         public static final int INTAKE_MOTOR_PIN = 5;
-        public static double intakeSpeed = 0.7;
+        public static final double INTAKE_SPEED = 0.7;
     }
 
     public static final class FEEDER_CONSTANTS{
+
         public static final int FEEDER_MOTOR_PIN = 6;
-        public static double feederSpeed = 0.7;
+        public static final double FEEDER_SPEED = 0.7;
     }
 
     public static final class SHOOTER_CONSTATS{
+
         public static final int SHOOTER_MOTOR_PIN = 7;
-        public static double shooterSpeed = 0.7;
+        public static double SHOOTER_SPEED = 0.7;
     }
 }
