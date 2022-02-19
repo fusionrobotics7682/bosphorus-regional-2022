@@ -18,9 +18,9 @@ import frc.robot.Constants;
 public class DriveSubsystem extends SubsystemBase {
 
   Victor frontLeft = new Victor(Constants.Drive.FRONT_LEFT_MOTOR_PIN);
-  Victor rearLeft = new Victor(Constants.Drive.BACK_LEFT_MOTOR_PIN);
+  Victor rearLeft = new Victor(Constants.Drive.REAR_LEFT_MOTOR_PIN);
   Victor frontRight = new Victor(Constants.Drive.FRONT_RIGHT_MOTOR_PIN);
-  Victor rearRight = new Victor(Constants.Drive.BACK_RIGHT_MOTOR_PIN);
+  Victor rearRight = new Victor(Constants.Drive.REAR_RIGHT_MOTOR_PIN);
 
   AHRS NavX = new AHRS(Port.kMXP);
 
