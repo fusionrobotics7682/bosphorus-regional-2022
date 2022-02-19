@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -17,10 +16,10 @@ import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  Victor frontLeft = new Victor(Constants.Drive.FRONT_LEFT_MOTOR_PIN);
-  Victor rearLeft = new Victor(Constants.Drive.REAR_LEFT_MOTOR_PIN);
-  Victor frontRight = new Victor(Constants.Drive.FRONT_RIGHT_MOTOR_PIN);
-  Victor rearRight = new Victor(Constants.Drive.REAR_RIGHT_MOTOR_PIN);
+  Victor frontLeft = new Victor(Constants.DRIVE_CONSTANTS.FRONT_LEFT_MOTOR_PIN);
+  Victor rearLeft = new Victor(Constants.DRIVE_CONSTANTS.REAR_LEFT_MOTOR_PIN);
+  Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
+  Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
 
   AHRS NavX = new AHRS(Port.kMXP);
 
