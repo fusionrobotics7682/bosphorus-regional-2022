@@ -6,9 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-
+  
   Victor shooter = new Victor(7);
 
   /** Creates a new ShooterSubsystem. */
@@ -20,7 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot() {
-    shooter.set(1);
+    shooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
   }
 
   public void getInSlower(){
@@ -31,4 +32,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopMotor() {
     shooter.set(0);
   }
+
+  public double getShooterSpeed(){
+    return Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED;
+  }
+
+  
 }

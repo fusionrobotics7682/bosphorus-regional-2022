@@ -16,10 +16,10 @@ import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  Victor frontLeft = new Victor(Constants.DRIVE_CONSTANTS.FRONT_LEFT_MOTOR_PIN);
-  Victor rearLeft = new Victor(Constants.DRIVE_CONSTANTS.REAR_LEFT_MOTOR_PIN);
-  Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
-  Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
+  Victor frontLeft = new Victor(1);
+  Victor rearLeft = new Victor(2);
+  Victor frontRight = new Victor(3);
+  Victor rearRight = new Victor(4);
 
   AHRS NavX = new AHRS(Port.kMXP);
 
@@ -95,4 +95,21 @@ public class DriveSubsystem extends SubsystemBase {
   public void goHangar(){
     // Path Planning code
   }
+
+  public double getTankDriveLeftMotorsSpeed(){
+      return leftMotorGroup.get();
+  }
+
+  public double getTankDriveRightMotorsSpeed(){
+      return rightMotorGroup.get();
+  }
+
+  public double getArcadeDriveXSpeed(){
+      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
+  }
+
+  public double getArcadeDriveZSpeed(){
+      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
+  }
+
 }
