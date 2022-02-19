@@ -47,7 +47,7 @@ public final class Constants {
         public static final double FEEDER_SPEED = 0.7;
     }
 
-    public static final class SHOOTER_CONSTATS{
+    public static final class SHOOTER_CONSTANTS{
 
         public static final int SHOOTER_MOTOR_PIN = 7;
         public static double SHOOTER_SPEED = 0.7;
