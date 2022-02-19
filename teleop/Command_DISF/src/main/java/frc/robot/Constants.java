@@ -2,8 +2,6 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-// Example GitHub Commit 
-
 package frc.robot;
 
 /**
@@ -16,6 +14,7 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DRIVE_CONSTANTS{
+
         public static final int FRONT_LEFT_MOTOR_PIN = 1;
         public static final int FRONT_RIGHT_MOTOR_PIN = 2;
         public static final int REAR_LEFT_MOTOR_PIN = 3;
@@ -30,82 +29,27 @@ public final class Constants {
         public static final int RIGHT_DRIVE_ENCODER_A_CHANNEL = 0;
         public static final int RIGHT_DRIVE_ENCODER_B_CHANNEL = 1;
 
-        public static double tankDriveLeftMotorsSpeed = 0.85;
-        public static double tankDriveRightMotorsSpeed = 0.85;
+        public static final double TANK_DRIVE_LEFT_SPEED = 0.85;
+        public static final double TANK_DRIVE_RIGHT_SPEED = 0.85;
         
-        public static double arcadeDriveXSpeed = 0.7;
-        public static double arcadeDriveZSpeed = 0.7;
-
-        public static double getTankDriveLeftMotorsSpeed(){
-            return tankDriveLeftMotorsSpeed;
-        }
-
-        public static void setTankDriveLeftMotorsSpeed(double speed){
-            tankDriveLeftMotorsSpeed = speed;
-        }
-
-        public static double getTankDriveRightMotorsSpeed(){
-            return tankDriveRightMotorsSpeed;
-        }
-
-        public static void setTankDriveRightMotorsSpeed(double speed){
-            tankDriveRightMotorsSpeed = speed;
-        }
-
-        public static double getArcadeDriveXSpeed(){
-            return arcadeDriveXSpeed;
-        }
-
-        public static void setArcadeDriveXSpeed(double speed){
-            arcadeDriveXSpeed = speed;
-        }
-
-        public static double getArcadeDriveZSpeed(){
-            return arcadeDriveZSpeed;
-        }
-
-        public static void setArcadeDriveZSpeed(double speed){
-            arcadeDriveZSpeed = speed;
-        }
-       
+        public static final double ARCADE_DRIVE_X_SPEED = 0.7;
+        public static final double ARCADE_DRIVE_Z_SPEED = 0.7;       
     }
 
     public static final class INTAKE_CONSTANTS{
         public static final int INTAKE_MOTOR_PIN = 5;
-        public static double intakeSpeed = 0.7;
-
-        public static double getIntakeSpeed(){
-            return intakeSpeed;
-        }
-
-        public static void setIntakeSpeed(double speed){
-            intakeSpeed = speed;
-        }
+        public static final double INTAKE_SPEED = 0.7;
     }
 
     public static final class FEEDER_CONSTANTS{
-        public static final int FEEDER_MOTOR_PIN = 5;
-        public static double feederSpeed = 0.7;
 
-        public static double getFeederSpeed(){
-            return feederSpeed;
-        }
-
-        public static void setFeederSpeed(double speed){
-            feederSpeed = speed;
-        }
+        public static final int FEEDER_MOTOR_PIN = 6;
+        public static final double FEEDER_SPEED = 0.7;
     }
 
-    public static final class SHOOTER_CONSTATS{
+    public static final class SHOOTER_CONSTANTS{
+
         public static final int SHOOTER_MOTOR_PIN = 7;
-        public static double shooterSpeed = 0.7;
-
-        public static double getShooterSpeed(){
-            return shooterSpeed;
-        }
-
-        public static void setShooterSpeed(double speed){
-            shooterSpeed = speed;
-        }
+        public static double SHOOTER_SPEED = 0.7;
     }
 }

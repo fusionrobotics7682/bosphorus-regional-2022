@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class FeederSubsystem extends SubsystemBase {
 
@@ -17,16 +18,24 @@ public class FeederSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
   // Getting the ball
   public void getIn(){
-    feeder.set(1);
+    feeder.set(Constants.FEEDER_CONSTANTS.FEEDER_SPEED);
   }
+
   // Putting the ball
   public void getOut(){
-    feeder.set(-1);
+    feeder.setInverted(true);
+    feeder.set(Constants.FEEDER_CONSTANTS.FEEDER_SPEED);
   }
 
   public void stopMotor(){
     feeder.set(0);
   }
+
+  public double getFeederSpeed(){
+    return Constants.FEEDER_CONSTANTS.FEEDER_SPEED;
+  }
+  
 }
