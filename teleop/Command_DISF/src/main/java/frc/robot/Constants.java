@@ -18,8 +18,8 @@ public final class Constants {
     public static final class DRIVE_CONSTANTS{
         public static final int FRONT_LEFT_MOTOR_PIN = 1;
         public static final int FRONT_RIGHT_MOTOR_PIN = 2;
-        public static final int BACK_LEFT_MOTOR_PIN = 3;
-        public static final int BACK_RIGHT_MOTOR_PIN = 4;
+        public static final int REAR_LEFT_MOTOR_PIN = 3;
+        public static final int REAR_RIGHT_MOTOR_PIN = 4;
 
         public static final int KP = 1;
         public static final int KI = 0;
