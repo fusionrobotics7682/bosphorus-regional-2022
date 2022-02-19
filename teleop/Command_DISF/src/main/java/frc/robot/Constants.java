@@ -84,7 +84,7 @@ public final class Constants {
     }
 
     public static final class FEEDER_CONSTANTS{
-        public static final int FEEDER_MOTOR_PIN = 6;
+        public static final int FEEDER_MOTOR_PIN = 5;
         public static double feederSpeed = 0.7;
 
         public static double getFeederSpeed(){

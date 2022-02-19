@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-
-  
   Victor shooter = new Victor(7);
 
   /** Creates a new ShooterSubsystem. */
