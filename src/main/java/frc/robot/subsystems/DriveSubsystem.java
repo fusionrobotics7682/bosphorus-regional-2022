@@ -28,7 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
   double error;
-  double setpoint;
+  double setpoint = 10;
 
   // All methods will in a loop
   /** Creates a new DriveCommand. */
@@ -77,6 +77,13 @@ public class DriveSubsystem extends SubsystemBase {
     drive.arcadeDrive(0, error*Constants.DRIVE_CONSTANTS.KP);
   }
 
+  public void pidForward(){
+    double error = 0;
+    error = setpoint - NavX.getAngle();
+    double output = error * Constants.DRIVE_CONSTANTS.KP;
+    drive.arcadeDrive(output, 0);
+  }
+
   public void goUpperHub (){
     // Path Planning code
   }
@@ -88,4 +95,21 @@ public class DriveSubsystem extends SubsystemBase {
   public void goHangar(){
     // Path Planning code
   }
+
+  public double getTankDriveLeftMotorsSpeed(){
+      return leftMotorGroup.get();
+  }
+
+  public double getTankDriveRightMotorsSpeed(){
+      return rightMotorGroup.get();
+  }
+
+  public double getArcadeDriveXSpeed(){
+      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_X_SPEED;
+  }
+
+  public double getArcadeDriveZSpeed(){
+      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
+  }
+
 }

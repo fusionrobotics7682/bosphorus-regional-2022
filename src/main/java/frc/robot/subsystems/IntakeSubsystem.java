@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -24,10 +25,16 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void getOut(){
-    intake.set(-1);
+    intake.setInverted(true);
+    intake.set(Constants.FEEDER_CONSTANTS.FEEDER_SPEED);
   }
 
   public void stopMotor(){
     intake.set(0);
   }
+
+  public double getIntakeSpeed(){
+    return Constants.INTAKE_CONSTANTS.INTAKE_SPEED;
+  }
+
 }
