@@ -16,7 +16,7 @@ import frc.robot.commands.ButtonGoLowerHubPosition;
 import frc.robot.commands.ButtonGoTerminalCommand;
 import frc.robot.commands.ButtonGoUpperHubPosition;
 import frc.robot.commands.ButtonThrowBallCommand;
-import frc.robot.commands.ButtonThrowBallToUpperHub;s
+import frc.robot.commands.ButtonThrowBallToUpperHub;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
