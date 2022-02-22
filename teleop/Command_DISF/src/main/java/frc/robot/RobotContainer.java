@@ -42,7 +42,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Running sequential
-    /*new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
+    new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
     new JoystickButton(joystick, 6).whenActive(new ThrowBallWithFeederCommand());
 
     // Running Parallel
@@ -59,7 +59,7 @@ public class RobotContainer {
 
     // Target : Lower Hub Position
     new JoystickButton(joystick, 7).whenActive(new ButtonGoLowerHubPosition());
-*/
+
     // Unit Process
 
    /* // Shooter Mechanism
