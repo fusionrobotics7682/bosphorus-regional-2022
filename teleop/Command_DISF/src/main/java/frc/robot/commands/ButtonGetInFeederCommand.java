@@ -6,16 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class ButtonGetInFeederCommand extends CommandBase {
 
-  private IntakeSubsystem intakeSubsystem;
+  private FeederSubsystem feederSubsystem;
   private DigitalInput frontLimitSwitch;
 
   /** Creates a new GetInFeederCommand. */
-  public ButtonGetInFeederCommand() {
-    addRequirements(intakeSubsystem);
+  public ButtonGetInFeederCommand(FeederSubsystem feederSubsystem) {
+    this.feederSubsystem = feederSubsystem;
+    addRequirements(feederSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -25,20 +27,23 @@ public class ButtonGetInFeederCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.getIn();
+    feederSubsystem.getIn();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    feederSubsystem.stopMotor();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(frontLimitSwitch.get() == false){
+    /*if(frontLimitSwitch.get() == false){
     return false;
     }else{
       return true;
-    }
+    }*/
+    return false;
   }
 }

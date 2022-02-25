@@ -4,24 +4,19 @@
 
 package frc.robot.commands;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class TurnTo90Degrees extends CommandBase {
 
-  DriveSubsystem driveSubsystem;
-  AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private DriveSubsystem driveSubsystem;
 
-  /** Creates a new TurnTo360Degrees. */
-  public TurnTo90Degrees() {
+  public TurnTo90Degrees(DriveSubsystem driveSubsystem) {
+    this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
   }
 
-  final double kP = 0.5;
-  double setpoint = 90;
 
   // Called when the command is initially scheduled.
   @Override
@@ -30,14 +25,14 @@ public class TurnTo90Degrees extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double error = setpoint - gyro.getAngle();
-    double output = error * kP;
-    driveSubsystem.arcadeDrive(0, output);
+    driveSubsystem.turnTo90Degrees();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveSubsystem.stopDrive();
+  }
 
   // Returns true when the command should end.
   @Override

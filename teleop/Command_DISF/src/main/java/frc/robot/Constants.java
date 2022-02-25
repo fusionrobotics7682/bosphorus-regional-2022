@@ -15,10 +15,10 @@ package frc.robot;
 public final class Constants {
     public static final class DRIVE_CONSTANTS{
 
-        public static final int FRONT_LEFT_MOTOR_PIN = 1;
-        public static final int FRONT_RIGHT_MOTOR_PIN = 2;
-        public static final int REAR_LEFT_MOTOR_PIN = 3;
-        public static final int REAR_RIGHT_MOTOR_PIN = 4;
+        public static final int FRONT_LEFT_MOTOR_PIN = 0;
+        public static final int FRONT_RIGHT_MOTOR_PIN = 1;
+        public static final int REAR_LEFT_MOTOR_PIN = 2;
+        public static final int REAR_RIGHT_MOTOR_PIN = 3;
 
         public static final int KP = 1;
         public static final int KI = 0;
@@ -33,7 +33,9 @@ public final class Constants {
         public static final double TANK_DRIVE_RIGHT_SPEED = 0.85;
         
         public static final double ARCADE_DRIVE_X_SPEED = 0.7;
-        public static final double ARCADE_DRIVE_Z_SPEED = 0.7;       
+        public static final double ARCADE_DRIVE_Z_SPEED = 0.7;  
+        
+        public static final double K_DRIVE_TICK_2_FEET = 1.0 / 128 * 6 * Math.PI / 12;
     }
 
     public static final class INTAKE_CONSTANTS{
