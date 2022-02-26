@@ -72,7 +72,7 @@ public class RobotContainer {
     new JoystickButton(joystick, 10).whenActive(new GetInFeederCommand());
     */
 
-    new JoystickButton(joystick, 4).whenPressed(new ButtonForwardDriveCommand());
+    new JoystickButton(joystick, 4).whileActiveContinous(new ButtonForwardDriveCommand());
   }
 
 
