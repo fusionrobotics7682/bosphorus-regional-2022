@@ -9,8 +9,19 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AxisArcadeDriveCommand;
 import frc.robot.commands.ButtonForwardDriveCommand;
+import frc.robot.commands.AutoGetBallCommand;
+import frc.robot.commands.ButtonGetBallIntakeCommand;
+import frc.robot.commands.ButtonGetInFeederCommand;
+import frc.robot.commands.ButtonThrowBallCommand;
+import frc.robot.commands.AutoThrowBallCommand;
+import frc.robot.commands.ButtonThrowBallToUpperHub;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -22,6 +33,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+
   Joystick joystick = new Joystick(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -44,11 +59,12 @@ public class RobotContainer {
     // Running sequential
     new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
     new JoystickButton(joystick, 6).whenActive(new ThrowBallWithFeederCommand());
-
+*/
     // Running Parallel
-    new JoystickButton(joystick, 1).whenActive(new ParallelCommandGroup(new ButtonGetBallCommand(), new ButtonThrowBallCommand()));
-    new JoystickButton(joystick, 2).whenActive(new ParallelCommandGroup(new ButtonThrowBallCommand(), new GetInFeederCommand()));
+    new JoystickButton(joystick, 1).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetBallIntakeCommand(intakeSubsystem), new ButtonGetInFeederCommand(feederSubsystem)));
+    new JoystickButton(joystick, 2).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetInFeederCommand(feederSubsystem), new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem), new AutoGetBallCommand(intakeSubsystem, feederSubsystem)));
 
+/*
     // Go a placement with path planning
 
     // Target : Hangar
@@ -71,8 +87,6 @@ public class RobotContainer {
     // Feeder Mechansim
     new JoystickButton(joystick, 10).whenActive(new GetInFeederCommand());
     */
-
-    new JoystickButton(joystick, 4).whenPressed(new ButtonForwardDriveCommand());
   }
 
 
@@ -91,6 +105,6 @@ public class RobotContainer {
 
     // 1 Ball point
     //return new SequentialCommandGroup(new ButtonThrowBallCommand());
-    return null;
+    return new SequentialCommandGroup(new AutoGetBallCommand(intakeSubsystem, feederSubsystem), new AutoThrowBallCommand(shooterSubsystem, feederSubsystem));
   }
 }
