@@ -11,6 +11,7 @@ import frc.robot.commands.AxisArcadeDriveCommand;
 import frc.robot.commands.ButtonForwardDriveCommand;
 import frc.robot.commands.AutoGetBallCommand;
 import frc.robot.commands.ButtonGetBallIntakeCommand;
+import frc.robot.commands.ButtonGetBallWithFeederCommand;
 import frc.robot.commands.ButtonGetInFeederCommand;
 import frc.robot.commands.ButtonThrowBallCommand;
 import frc.robot.commands.AutoThrowBallCommand;
@@ -57,9 +58,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Running sequential
+    /*
     new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
-    new JoystickButton(joystick, 6).whenActive(new ThrowBallWithFeederCommand());
-*/
+    new JoystickButton(joystick, 6).whenActive(new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem));
+    */
+    
     // Running Parallel
     new JoystickButton(joystick, 1).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetBallIntakeCommand(intakeSubsystem), new ButtonGetInFeederCommand(feederSubsystem)));
     new JoystickButton(joystick, 2).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetInFeederCommand(feederSubsystem), new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem), new AutoGetBallCommand(intakeSubsystem, feederSubsystem)));
