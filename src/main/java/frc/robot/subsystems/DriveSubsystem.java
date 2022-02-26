@@ -34,6 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveCommand. */
   public DriveSubsystem() {
     NavX.reset();
+    drive.
     rightMotorGroup.setInverted(true);
   }
 
