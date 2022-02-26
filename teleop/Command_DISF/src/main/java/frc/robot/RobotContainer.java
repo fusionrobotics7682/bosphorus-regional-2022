@@ -62,34 +62,9 @@ public class RobotContainer {
     new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
     new JoystickButton(joystick, 6).whenActive(new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem));
     */
-    
     // Running Parallel
     new JoystickButton(joystick, 1).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetBallIntakeCommand(intakeSubsystem), new ButtonGetInFeederCommand(feederSubsystem)));
-    new JoystickButton(joystick, 2).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetInFeederCommand(feederSubsystem), new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem), new AutoGetBallCommand(intakeSubsystem, feederSubsystem)));
-
-/*
-    // Go a placement with path planning
-
-    // Target : Hangar
-    new JoystickButton(joystick, 3).whenActive(new ButtonGoHangar());
-
-    // Target : Upper Hub Position
-    new JoystickButton(joystick, 4).whenActive(new ButtonGoUpperHubPosition());
-
-    // Target : Lower Hub Position
-    new JoystickButton(joystick, 7).whenActive(new ButtonGoLowerHubPosition());
-
-    // Unit Process
-
-   /* // Shooter Mechanism
-    new JoystickButton(joystick, 8).whenActive(new ButtonThrowBallCommand());
-
-    // Intake Mechanism
-    new JoystickButton(joystick, 9).whenActive(new ButtonGetBallCommand());
-
-    // Feeder Mechansim
-    new JoystickButton(joystick, 10).whenActive(new GetInFeederCommand());
-    */
+    new JoystickButton(joystick, 2).whileActiveContinuous(new ParallelCommandGroup(new ButtonGetBallIntakeCommand(intakeSubsystem),new ButtonGetInFeederCommand(feederSubsystem)));
   }
 
 
