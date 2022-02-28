@@ -2,31 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
 
-public class ButtonGoHangarCommand extends CommandBase {
-
-  private DriveSubsystem driveSubsystem;
-
-  /** Creates a new ButtonGoHangar. */
-  public ButtonGoHangarCommand() {
-    addRequirements(driveSubsystem);
+public class TankDriveCommand extends CommandBase {
+  /** Creates a new AxisTankDriveCommand. */
+  public TankDriveCommand() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    System.out.println("GO HANGAR COMMAND INITILAZIED !!!");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    driveSubsystem.goHangar();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

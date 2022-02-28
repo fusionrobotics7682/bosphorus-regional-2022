@@ -2,47 +2,42 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Teleop.Unit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class ButtonGetBallCommand extends CommandBase {
+public class ForwardDriveCommand extends CommandBase {
 
-  private IntakeSubsystem intakeSubsystem;
+  private DriveSubsystem driveSubsystem;
 
-  //DigitalInput frontLimitSwitch;
-
-  /** Creates a new ButtonGetBallCommand. */
-  public ButtonGetBallCommand() {
-    addRequirements(intakeSubsystem);
+  /** Creates a new ForwardDriveCommand. */
+  public ForwardDriveCommand() {
+    driveSubsystem = new DriveSubsystem();
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("GET BALL COMMAND INITIALIZED !!!");
+    System.out.println("JOYSTICK FORWARD DRIVE COMMAND INITIALIZED !!!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.getIn();
-  }
+    driveSubsystem.forwardDrive();
+    }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveSubsystem.stopDrive();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*if(frontLimitSwitch.get() == true) {
-      return true;
-    }
     return false;
-  }*/
-  return false;
   }
-
 }
