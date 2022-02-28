@@ -4,16 +4,23 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
+
+  Timer timer = new Timer();
   
-  Victor shooter = new Victor(7);
+  Victor frontShooter = new Victor(7);
+  Victor rearShooter = new Victor(8);
 
   /** Creates a new ShooterSubsystem. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+    rearShooter.setInverted(true);
+    frontShooter.setInverted(true);
+  }
 
   @Override
   public void periodic() {
@@ -21,16 +28,20 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot() {
-    shooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
+    rearShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
+    frontShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
   }
 
   public void getInSlower(){
-    shooter.setInverted(true);
-    shooter.set(0.5);
+    rearShooter.setInverted(true);
+    frontShooter.setInverted(true);
+    rearShooter.set(0.75);
+    frontShooter.set(0.75);
   }
 
   public void stopMotor() {
-    shooter.set(0);
+    rearShooter.set(0);
+    frontShooter.set(0);
   }
 
   public double getShooterSpeed(){

@@ -33,23 +33,25 @@ public final class Constants {
         public static final double TANK_DRIVE_RIGHT_SPEED = 0.85;
         
         public static final double ARCADE_DRIVE_X_SPEED = 0.7;
-        public static final double ARCADE_DRIVE_Z_SPEED = 0.7;       
+        public static final double ARCADE_DRIVE_Z_SPEED = 0.7;  
+        
+        public static final double K_DRIVE_TICK_2_FEET = 1.0 / 128 * 6 * Math.PI / 12;
     }
 
     public static final class INTAKE_CONSTANTS{
-        public static final int INTAKE_MOTOR_PIN = 4;
+        public static final int INTAKE_MOTOR_PIN = 5;
         public static final double INTAKE_SPEED = 0.7;
     }
 
     public static final class FEEDER_CONSTANTS{
 
-        public static final int FEEDER_MOTOR_PIN = 5;
+        public static final int FEEDER_MOTOR_PIN = 6;
         public static final double FEEDER_SPEED = 0.7;
     }
 
     public static final class SHOOTER_CONSTANTS{
 
-        public static final int SHOOTER_MOTOR_PIN = 6;
+        public static final int SHOOTER_MOTOR_PIN = 7;
         public static double SHOOTER_SPEED = 0.7;
     }
 }
