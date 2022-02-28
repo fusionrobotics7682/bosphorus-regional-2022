@@ -5,15 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.Teleop.ArcadeDriveCommand;
-import frc.robot.commands.Teleop.Unit.GetBallIntakeCommand;
-import frc.robot.commands.Teleop.Unit.GetInFeederCommand;
+import frc.robot.commands.Teleop.Binary.GetBallWithFeederCommand;
+import frc.robot.commands.Teleop.Binary.ThrowBallWithFeederCommand;
+import frc.robot.commands.Teleop.Unit.Drive.ArcadeDriveCommand;
+import frc.robot.commands.Teleop.Unit.Feeder.GetInFeederCommand;
+import frc.robot.commands.Teleop.Unit.Feeder.GetOutFeederCommand;
+import frc.robot.commands.Teleop.Unit.Intake.GetBallIntakeCommand;
+import frc.robot.commands.Teleop.Unit.Intake.GetOutIntakeCommand;
+import frc.robot.commands.Teleop.Unit.Shooter.GetInBallShooterCommand;
+import frc.robot.commands.Teleop.Unit.Shooter.ThrowBallShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -43,27 +48,32 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    // Running sequential
+    // Running Binary Commands
+
     /*
-    new JoystickButton(joystick, 5).whenActive(new ButtonGetBallWithFeederCommand());
-    new JoystickButton(joystick, 6).whenActive(new ButtonThrowBallCommand(feederSubsystem, shooterSubsystem));
+    new JoystickButton(joystick, 2).whileActiveContinuous(new GetBallWithFeederCommand(feederSubsystem, intakeSubsystem));
+    new JoystickButton(joystick, 3).whileActiveContinuous(new ThrowBallWithFeederCommand(feederSubsystem, shooterSubsystem));
     */
-    // Running Parallel
-    new JoystickButton(joystick, 2).whileActiveContinuous(new ParallelCommandGroup(new GetBallIntakeCommand(intakeSubsystem),new GetInFeederCommand(feederSubsystem)));
+
+    // Running Unit Commands
+    // Intake
+    new JoystickButton(joystick, 1).whileActiveContinuous(new GetBallIntakeCommand(intakeSubsystem));
+    new JoystickButton(joystick, 4).whileActiveContinuous(new GetOutIntakeCommand(intakeSubsystem));
+    // Feeder
+    new JoystickButton(joystick, 2).whileActiveContinuous(new GetInFeederCommand(feederSubsystem));
+    new JoystickButton(joystick, 3).whileActiveContinuous(new GetOutFeederCommand(feederSubsystem));
+    // Shooter
+    new JoystickButton(joystick, 5).whileActiveContinuous(new ThrowBallShooterCommand(shooterSubsystem));
+    new JoystickButton(joystick, 6).whileActiveContinuous(new GetInBallShooterCommand(shooterSubsystem));
+    // Drive
+    /* I did not write this because it is unneccessary but I left it here for everything */
+    
   }
 
 
 
   public Command getAutonomousCommand() {
-    
-    // 1 Ball point and returning terminal
-    // return new SequentialCommandGroup(new ButtonGoUpperHubPosition(), new ButtonThrowBallToUpperHub(), new ButtonGoTerminalCommand());
 
-    // 2 Ball point  and returning terminal
-    //return new SequentialCommandGroup(new ButtonGetTheReadyBall(), new ButtonGoUpperHubPosition(), new ButtonThrowBallToUpperHub(), new ButtonGoTerminalCommand());
-
-    // 1 Ball point
-    //return new SequentialCommandGroup(new ButtonThrowBallCommand());
     return null;
   }
 }

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ThrowBallCommand extends CommandBase {
+public class ThrowBallWithFeederCommand extends CommandBase {
 
   /*DigitalInput frontLimitSwitch;
   DigitalInput backLimitSwitch;*/
@@ -18,7 +18,7 @@ public class ThrowBallCommand extends CommandBase {
   private ShooterSubsystem shooterSubsystem;
 
   /** Creates a new ThrowBallCommand. */
-  public ThrowBallCommand(FeederSubsystem feederSubsystem, ShooterSubsystem shooterSubsystem) {
+  public ThrowBallWithFeederCommand(FeederSubsystem feederSubsystem, ShooterSubsystem shooterSubsystem) {
     this.feederSubsystem = feederSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     addRequirements(feederSubsystem, shooterSubsystem);

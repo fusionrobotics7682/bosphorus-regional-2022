@@ -19,7 +19,7 @@ public class GetBallWithFeederCommand extends CommandBase {
   
 
   /** Creates a new GetBallCommand. */
-  public GetBallWithFeederCommand() {
+  public GetBallWithFeederCommand(FeederSubsystem feederSubsystem, IntakeSubsystem intakeSubsystem) {
     addRequirements(feederSubsystem, intakeSubsystem);
   }
 
