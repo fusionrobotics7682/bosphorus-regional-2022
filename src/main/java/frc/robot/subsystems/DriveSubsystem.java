@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -26,9 +27,13 @@ public class DriveSubsystem extends SubsystemBase {
   public MotorControllerGroup leftMotorGroup = new MotorControllerGroup(rearLeft, frontLeft);
   public MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearRight, frontRight);
 
+  Encoder encoder = new Encoder(0, 1);
+
   DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-  double error;
-  double setpoint = 10;
+  double gyroError = 0;
+  double encoderError = 0;
+  double encoderSetpoint = 10;
+  double gyroSetpoint = 90;
 
   // All methods will in a loop
   /** Creates a new DriveCommand. */
@@ -71,17 +76,17 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void turnTo360degree(){
-    setpoint = 360;
-    error = 0;
-    error = setpoint - NavX.getAngle();
-    drive.arcadeDrive(0, error*Constants.DRIVE_CONSTANTS.KP);
+    gyroSetpoint = 360;
+    gyroError = 0;
+    gyroError = encoderSetpoint - NavX.getAngle();
+    drive.arcadeDrive(0, gyroError*Constants.DRIVE_CONSTANTS.KP);
   }
 
-  public void pidForward(){
-    double error = 0;
-    error = setpoint - NavX.getAngle();
-    double output = error * Constants.DRIVE_CONSTANTS.KP;
-    drive.arcadeDrive(output, 0);
+  public void turnTo90Degrees(){
+    encoderError = gyroSetpoint - NavX.getAngle();
+    double outputSpeed = encoderError * Constants.DRIVE_CONSTANTS.KP;
+    leftMotorGroup.set(outputSpeed);
+    rightMotorGroup.set(outputSpeed);
   }
 
   public void goUpperHub (){
@@ -96,6 +101,17 @@ public class DriveSubsystem extends SubsystemBase {
     // Path Planning code
   }
 
+  public void straightForwardPID(){
+
+    double sensorPosition = encoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
+
+    // calculations
+    double error = encoderSetpoint - sensorPosition;
+    double outputSpeed = Constants.DRIVE_CONSTANTS.KP * error;
+
+    drive.tankDrive(outputSpeed, outputSpeed);
+  }
+
   public double getTankDriveLeftMotorsSpeed(){
       return leftMotorGroup.get();
   }
@@ -105,7 +121,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getArcadeDriveXSpeed(){
-      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_X_SPEED;
+      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
   }
 
   public double getArcadeDriveZSpeed(){
