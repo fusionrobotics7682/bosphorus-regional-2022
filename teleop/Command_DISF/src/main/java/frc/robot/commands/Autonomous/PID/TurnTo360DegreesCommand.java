@@ -1,18 +1,14 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class StraightForwardPIDCommand extends CommandBase {
+public class TurnTo360DegreesCommand extends CommandBase {
 
   private DriveSubsystem driveSubsystem;
+  /** Creates a new TurnTo360Degrees. */
+  public TurnTo360DegreesCommand(DriveSubsystem driveSubsystem) {
 
-  /** Creates a new StraightForwardPIDCommand. */
-  public StraightForwardPIDCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
@@ -25,7 +21,7 @@ public class StraightForwardPIDCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.goForwardPID();
+    driveSubsystem.turnTo360degree();
   }
 
   // Called once the command ends or is interrupted.

@@ -20,9 +20,9 @@ public final class Constants {
         public static final int REAR_LEFT_MOTOR_PIN = 2;
         public static final int REAR_RIGHT_MOTOR_PIN = 3;
 
-        public static final int KP = 1;
-        public static final int KI = 0;
-        public static final int KD = 0;
+        public static final double KP = 0.75;
+        public static final double KI = 0;
+        public static final double KD = 0;
 
         public static final int LEFT_DRIVE_ENCODER_A_CHANNEL = 9;
         public static final int LEFT_DRIVE_ENCODER_B_CHANNEL = 8;

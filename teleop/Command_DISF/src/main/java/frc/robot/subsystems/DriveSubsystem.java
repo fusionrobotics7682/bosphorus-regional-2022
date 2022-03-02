@@ -27,13 +27,14 @@ public class DriveSubsystem extends SubsystemBase {
   public MotorControllerGroup leftMotorGroup = new MotorControllerGroup(rearLeft, frontLeft);
   public MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearRight, frontRight);
 
-  Encoder encoder = new Encoder(0, 1);
+  Encoder leftEncoder = new Encoder(0, 1);
+  Encoder rightEncoder = new Encoder(2, 3);
 
   DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
   double gyroError = 0;
   double encoderError = 0;
   double encoderSetpoint = 10;
-  double gyroSetpoint = 90;
+  double gyroSetpoint = 0;
 
   // All methods will in a loop
   /** Creates a new DriveCommand. */
@@ -101,15 +102,27 @@ public class DriveSubsystem extends SubsystemBase {
     // Path Planning code
   }
 
-  public void straightForwardPID(){
+  public void goForwardPID(){
 
-    double sensorPosition = encoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
+    double sensorPosition = leftEncoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
 
     // calculations
     double error = encoderSetpoint - sensorPosition;
     double outputSpeed = Constants.DRIVE_CONSTANTS.KP * error;
 
     drive.tankDrive(outputSpeed, outputSpeed);
+  }
+
+  public void straightDriveGyro(){
+    gyroError = NavX.getAngle() - gyroSetpoint;
+    double outputSpeed = gyroError * Constants.DRIVE_CONSTANTS.KP;
+    drive.arcadeDrive(0.7, outputSpeed);
+  }
+
+  public void straightDriveEncoder(){
+    encoderError = leftEncoder.get() - rightEncoder.get();
+    double outputSpeed = encoderError * Constants.DRIVE_CONSTANTS.KP;
+    drive.tankDrive(outputSpeed, -outputSpeed);
   }
 
   public double getTankDriveLeftMotorsSpeed(){
