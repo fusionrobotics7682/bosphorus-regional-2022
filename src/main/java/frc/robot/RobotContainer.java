@@ -41,7 +41,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     
-    driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(driveSubsystem, 0.5, joystick.getX(), 0.5, joystick.getZ()));
+    driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(driveSubsystem));
 
   }
 
@@ -62,9 +62,11 @@ public class RobotContainer {
     // Feeder
     new JoystickButton(joystick, 2).whileActiveContinuous(new GetInFeederCommand(feederSubsystem));
     new JoystickButton(joystick, 3).whileActiveContinuous(new GetOutFeederCommand(feederSubsystem));
+    /*
     // Shooter
     new JoystickButton(joystick, 5).whileActiveContinuous(new ThrowBallShooterCommand(shooterSubsystem));
     new JoystickButton(joystick, 6).whileActiveContinuous(new GetInBallShooterCommand(shooterSubsystem));
+    */
     // Drive
     /* I did not write this because it is unneccessary but I left it here for everything */
     

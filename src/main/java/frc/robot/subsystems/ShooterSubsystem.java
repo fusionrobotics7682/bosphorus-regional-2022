@@ -13,13 +13,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   Timer timer = new Timer();
   
-  Victor frontShooter = new Victor(7);
+ // Victor frontShooter = new Victor(7);
   Victor rearShooter = new Victor(8);
 
-  /** Creates a new ShooterSubsystem. */
+  // Creates a new ShooterSubsystem. 
   public ShooterSubsystem() {
     rearShooter.setInverted(true);
-    frontShooter.setInverted(true);
+ //   frontShooter.setInverted(true);
   }
 
   @Override
@@ -29,24 +29,24 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shoot() {
     rearShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
-    frontShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
+    //frontShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
   }
 
   public void getInSlower(){
     rearShooter.setInverted(true);
-    frontShooter.setInverted(true);
+  //  frontShooter.setInverted(true);
     rearShooter.set(0.75);
-    frontShooter.set(0.75);
+   // frontShooter.set(0.75);
   }
 
   public void stopMotor() {
     rearShooter.set(0);
-    frontShooter.set(0);
+  //  frontShooter.set(0);
   }
-
+/*
   public double getShooterSpeed(){
     return Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED;
   }
 
-  
+  */
 }

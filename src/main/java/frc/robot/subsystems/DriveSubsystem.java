@@ -7,11 +7,12 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,13 +28,15 @@ public class DriveSubsystem extends SubsystemBase {
   public MotorControllerGroup leftMotorGroup = new MotorControllerGroup(rearLeft, frontLeft);
   public MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearRight, frontRight);
 
-  Encoder encoder = new Encoder(0, 1);
+  Encoder leftEncoder = new Encoder(3, 1, true,  EncodingType.k4X);
+  Encoder rightEncoder = new Encoder(4, 5, true, EncodingType.k4X);
 
   DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
   double gyroError = 0;
   double encoderError = 0;
   double encoderSetpoint = 10;
   double gyroSetpoint = 90;
+  final double K_DRIVE_TICK_2_FEET = 1.0 / 128 * 6 * Math.PI / 12;
 
   // All methods will in a loop
   /** Creates a new DriveCommand. */
@@ -44,6 +47,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Encoder Setpoint :", encoderSetpoint);
+    SmartDashboard.putNumber("Get Current Encoder position :", leftEncoder.get()*K_DRIVE_TICK_2_FEET);
   }
 
   public void arcadeDrive(double x, double z) {
@@ -103,13 +108,22 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void straightForwardPID(){
 
-    double sensorPosition = encoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
+    double sensorPosition = rightEncoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
 
     // calculations
     double error = encoderSetpoint - sensorPosition;
     double outputSpeed = Constants.DRIVE_CONSTANTS.KP * error;
 
     drive.tankDrive(outputSpeed, outputSpeed);
+  }
+
+  public void onlyStraightForward(){
+    double error = leftEncoder.get() - rightEncoder.get();
+
+    double outputSpeed = Constants.DRIVE_CONSTANTS.KP * error;
+
+    leftMotorGroup.set(-outputSpeed);
+    rightMotorGroup.set(outputSpeed);
   }
 
   public double getTankDriveLeftMotorsSpeed(){

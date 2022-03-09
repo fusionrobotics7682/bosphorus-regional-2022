@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Teleop.Unit.Drive;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -12,12 +13,10 @@ public class ArcadeDriveCommand extends CommandBase {
   
   private DriveSubsystem driveSubsystem;
   Timer timer = new Timer();
-  double xSpeed;
-  double zSpeed;
-  double xAxis;
-  double zAxis;
+  Joystick joystick = new Joystick(0);
 
-  public ArcadeDriveCommand(DriveSubsystem driveSubsystem,double xSpeed, double zSpeed, double xAxis, double zAxis) {
+
+  public ArcadeDriveCommand(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
   }
@@ -32,12 +31,7 @@ public class ArcadeDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(xSpeed < 0.8 && zSpeed < 0.8){
-    driveSubsystem.arcadeDrive(xSpeed*xAxis, zSpeed*zAxis);
-    }
-    else{
-      driveSubsystem.arcadeDrive(0,0);
-    }
+    driveSubsystem.arcadeDrive(joystick.getY()*0.75, joystick.getX()*0.75);
   }
 
   // Called once the command ends or is interrupted.
