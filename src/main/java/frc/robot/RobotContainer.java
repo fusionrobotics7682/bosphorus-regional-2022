@@ -15,14 +15,13 @@ import frc.robot.commands.Teleop.unit.Feeder.GetOutFeederCommand;
 import frc.robot.commands.Teleop.unit.Intake.GetInTakeCommand;
 import frc.robot.commands.Teleop.unit.Intake.GetOutTakeCommand;
 import frc.robot.commands.Teleop.unit.Lift.LiftUpCommand;
-import frc.robot.commands.Teleop.unit.Shooter.ShootToUpperHub;
+import frc.robot.commands.Teleop.unit.Shooter.ShootInTarmacCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -64,7 +63,7 @@ public class RobotContainer {
     new JoystickButton(joystick, 2).whileActiveContinuous(new GetOutFeederCommand(feederSubsystem));
     new JoystickButton(joystick, 3).whileActiveContinuous(new GetInTakeCommand(intakeSubsystem));
     new JoystickButton(joystick, 4).whileActiveContinuous(new GetOutTakeCommand(intakeSubsystem));
-    new JoystickButton(joystick, 5).whileActiveContinuous(new ShootToUpperHub(shooterSubsystem));
+    new JoystickButton(joystick, 5).whileActiveContinuous(new ShootInTarmacCommand(shooterSubsystem));
     new JoystickButton(joystick, 6).whileActiveContinuous(new LiftUpCommand(liftSubsystem));
 
     // Parallel process
