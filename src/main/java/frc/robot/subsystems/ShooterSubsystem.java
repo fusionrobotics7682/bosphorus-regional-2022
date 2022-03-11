@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,8 +14,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   Timer timer = new Timer();
   
-  Victor frontShooter = new Victor(7);
-  Victor rearShooter = new Victor(8);
+  Victor frontShooter = new Victor(Constants.SHOOTER_CONSTANTS.FRONT_SHOOTER_MOTOR_PIN);
+  Victor rearShooter = new Victor(Constants.SHOOTER_CONSTANTS.REAR_SHOOTER_MOTOR_PIN);
+
+  Encoder frontEncoder = new Encoder(Constants.SHOOTER_CONSTANTS.FRONT_ENCODER_CHANNEL_A, Constants.SHOOTER_CONSTANTS.FRONT_ENCODER_CHANNEL_B);
+  Encoder rearEncoder = new Encoder(Constants.SHOOTER_CONSTANTS.REAR_ENCODER_CHANNEL_A, Constants.SHOOTER_CONSTANTS.REAR_ENCODER_CHANNEL_B);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -27,9 +31,9 @@ public class ShooterSubsystem extends SubsystemBase {
    
   }
 
-  public void shoot() {
-    rearShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
-    frontShooter.set(Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED);
+  public void shoot(double rearSpeed, double frontSpeed) {
+    rearShooter.set(rearSpeed);
+    frontShooter.set(frontSpeed);
   }
 
   public void getInSlower(){
@@ -44,8 +48,21 @@ public class ShooterSubsystem extends SubsystemBase {
     frontShooter.set(0);
   }
 
+  public double getFrontEncoder() {
+    return frontEncoder.get();
+  }
+  
+  public double getRearEncoder() {
+    return rearEncoder.get();
+  }
+
   public double getShooterSpeed(){
     return Constants.SHOOTER_CONSTANTS.SHOOTER_SPEED;
+  }
+
+  public void resetEncoders() {
+    frontEncoder.reset();
+    rearEncoder.reset();
   }
 
   
