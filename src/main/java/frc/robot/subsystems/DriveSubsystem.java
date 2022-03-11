@@ -7,125 +7,83 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  Victor frontLeft = new Victor(1);
-  Victor rearLeft = new Victor(2);
-  Victor frontRight = new Victor(3);
-  Victor rearRight = new Victor(4);
+  //Basic Victors
+  Victor frontLeft = new Victor(Constants.DRIVE_CONSTANTS.FRONT_LEFT_MOTOR_PIN);
+  Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
+  Victor rearLeft = new Victor(Constants.DRIVE_CONSTANTS.REAR_LEFT_MOTOR_PIN);
+  Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
 
-  AHRS NavX = new AHRS(Port.kMXP);
+  // Motor Groups
+  MotorControllerGroup leftMotorGroup = new MotorControllerGroup(frontLeft, rearLeft);
+  MotorControllerGroup rightMotorGroup = new MotorControllerGroup(frontRight, rearRight);
 
-  public MotorControllerGroup leftMotorGroup = new MotorControllerGroup(rearLeft, frontLeft);
-  public MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearRight, frontRight);
+  // Sensors
+  Encoder leftEncoder = new Encoder(Constants.DRIVE_CONSTANTS.LEFT_DRIVE_ENCODER_A_CHANNEL, Constants.DRIVE_CONSTANTS.LEFT_DRIVE_ENCODER_B_CHANNEL);
+  Encoder rightEncoder = new Encoder(Constants.DRIVE_CONSTANTS.RIGHT_DRIVE_ENCODER_A_CHANNEL, Constants.DRIVE_CONSTANTS.RIGHT_DRIVE_ENCODER_B_CHANNEL);
+  AHRS navx = new AHRS(Constants.DRIVE_CONSTANTS.NAVX_SPI_PORT);
 
-  Encoder encoder = new Encoder(0, 1);
+  // Drive
+  public DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
-  DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-  double gyroError = 0;
-  double encoderError = 0;
-  double encoderSetpoint = 10;
-  double gyroSetpoint = 90;
+  // Controller
+  Joystick joystick = new Joystick(0);
 
-  // All methods will in a loop
-  /** Creates a new DriveCommand. */
-  public DriveSubsystem() {
-    NavX.reset();
-    rightMotorGroup.setInverted(true);
-  }
+  /** Creates a new ExampleSubsystem. */
+  public DriveSubsystem() {}
 
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
   }
 
-  public void arcadeDrive(double x, double z) {
-    drive.arcadeDrive(x, z);
+  public void arcadeDrive() {
+    differentialDrive.arcadeDrive(joystick.getY()*Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Y_SPEED, joystick.getX()*Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_X_SPEED);
   }
 
-  public void forwardDrive(){
-    leftMotorGroup.set(0.5);
-    rightMotorGroup.set(0.5);
+  public void tankDrive(){
+    differentialDrive.tankDrive(joystick.getRawAxis(5)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_LEFT_SPEED, joystick.getRawAxis(1)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_RIGHT_SPEED);
   }
 
-  public void backwardDrive(){
-    leftMotorGroup.set(-0.5);
-    rightMotorGroup.set(-0.5);
+  public void setLeftMotorGroupSpeed(double speed) {
+    leftMotorGroup.set(speed);
   }
 
-  public void rightDrive(){
-    leftMotorGroup.set(-0.5);
-    rightMotorGroup.set(0.5);
+  public void setRightMotorGroupSpeed(double speed) {
+    rightMotorGroup.set(speed);
   }
 
-  public void leftDrive(){
-    leftMotorGroup.set(0.5);
-    rightMotorGroup.set(-0.5);
+  public double getLeftEncoderDistance() {
+   return leftEncoder.getDistance();
   }
 
-  public void stopDrive(){
-    leftMotorGroup.set(0);
-    rightMotorGroup.set(0);
+  public double getRightEncoderDistance() {
+    return rightEncoder.getDistance();
   }
 
-  public void turnTo360degree(){
-    gyroSetpoint = 360;
-    gyroError = 0;
-    gyroError = encoderSetpoint - NavX.getAngle();
-    drive.arcadeDrive(0, gyroError*Constants.DRIVE_CONSTANTS.KP);
+  public void resetEncoders(){
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
 
-  public void turnTo90Degrees(){
-    encoderError = gyroSetpoint - NavX.getAngle();
-    double outputSpeed = encoderError * Constants.DRIVE_CONSTANTS.KP;
-    leftMotorGroup.set(outputSpeed);
-    rightMotorGroup.set(outputSpeed);
+  public void resetGyro(){
+    navx.reset();
   }
 
-  public void goUpperHub (){
-    // Path Planning code
+  public double getYaw(){
+    return navx.getYaw();
   }
 
-  public void goLowerHub(){
-    // Path Planning code
-  }
-
-  public void goHangar(){
-    // Path Planning code
-  }
-
-  public void straightForwardPID(){
-
-    double sensorPosition = encoder.get() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
-
-    // calculations
-    double error = encoderSetpoint - sensorPosition;
-    double outputSpeed = Constants.DRIVE_CONSTANTS.KP * error;
-
-    drive.tankDrive(outputSpeed, outputSpeed);
-  }
-
-  public double getTankDriveLeftMotorsSpeed(){
-      return leftMotorGroup.get();
-  }
-
-  public double getTankDriveRightMotorsSpeed(){
-      return rightMotorGroup.get();
-  }
-
-  public double getArcadeDriveXSpeed(){
-      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
-  }
-
-  public double getArcadeDriveZSpeed(){
-      return Constants.DRIVE_CONSTANTS.ARCADE_DRIVE_Z_SPEED;
+  public void stop(){
+    differentialDrive.stopMotor();
   }
 
 }

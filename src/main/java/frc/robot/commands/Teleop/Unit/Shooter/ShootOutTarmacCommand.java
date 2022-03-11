@@ -2,37 +2,36 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Teleop.Unit.Drive;
+package frc.robot.commands.Teleop.unit.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class ForwardDriveCommand extends CommandBase {
+public class ShootOutTarmacCommand extends CommandBase {
 
-  private DriveSubsystem driveSubsystem;
+  ShooterSubsystem shooterSubsystem;
 
-  /** Creates a new ForwardDriveCommand. */
-  public ForwardDriveCommand() {
-    driveSubsystem = new DriveSubsystem();
-    addRequirements(driveSubsystem);
+  /** Creates a new ShootToHub. */
+  public ShootOutTarmacCommand(ShooterSubsystem shooterSubsystem) {
+    this.shooterSubsystem = shooterSubsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    System.out.println("JOYSTICK FORWARD DRIVE COMMAND INITIALIZED !!!");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.forwardDrive();
-    }
+    shooterSubsystem.shoot(0.6, 0.1);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.stopDrive();
+    shooterSubsystem.stopMotor();
   }
 
   // Returns true when the command should end.

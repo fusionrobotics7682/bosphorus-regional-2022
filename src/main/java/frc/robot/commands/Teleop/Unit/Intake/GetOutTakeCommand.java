@@ -2,20 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Teleop.Unit.Intake;
+package frc.robot.commands.Teleop.unit.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class GetOutIntakeCommand extends CommandBase {
+public class GetOutTakeCommand extends CommandBase {
 
-  private IntakeSubsystem intakeSubsystem;
+  IntakeSubsystem intakeSubSystem;
 
-  /** Creates a new GetOutIntakeCommand. */
-  public GetOutIntakeCommand(IntakeSubsystem intakeSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
+  /** Creates a new GetOutTakeCommand. */
+  public GetOutTakeCommand(IntakeSubsystem intakeSubSystem) {
+    this.intakeSubSystem = intakeSubSystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intakeSubsystem);
+    addRequirements(intakeSubSystem);
   }
 
   // Called when the command is initially scheduled.
@@ -25,13 +25,13 @@ public class GetOutIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.getOut();
+    intakeSubSystem.getOut();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stopMotor();
+    intakeSubSystem.stopMotor();
   }
 
   // Returns true when the command should end.

@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  Victor intake = new Victor(7);
+  Victor intake = new Victor(Constants.INTAKE_CONSTANTS.INTAKE_MOTOR_PIN);
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {}
