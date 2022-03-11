@@ -4,52 +4,53 @@
 
 package frc.robot.commands.Teleop.binary;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class GetBallWithFeederCommand extends CommandBase {
+public class ShootWithFeederCommand extends CommandBase {
+
+  /*DigitalInput frontLimitSwitch;
+  DigitalInput backLimitSwitch;*/
 
   private FeederSubsystem feederSubsystem;
-  private IntakeSubsystem intakeSubsystem;
+  private ShooterSubsystem shooterSubsystem;
 
-  DigitalInput frontLimitSwitch;
-  DigitalInput backLimitSwitch;
-  
-
-  /** Creates a new GetBallCommand. */
-  public GetBallWithFeederCommand(FeederSubsystem feederSubsystem, IntakeSubsystem intakeSubsystem) {
-    addRequirements(feederSubsystem, intakeSubsystem);
+  /** Creates a new ThrowBallCommand. */
+  public ShootWithFeederCommand(FeederSubsystem feederSubsystem, ShooterSubsystem shooterSubsystem) {
+    this.feederSubsystem = feederSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
+    addRequirements(feederSubsystem, shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("GET BALL COMMAND INITIALIZED !!!");
+    System.out.println("THROW BALL COMMAND INITIALIZED !!!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("GET BALL COMMAND EXECUTED !!!");
-    intakeSubsystem.getIn();
     feederSubsystem.getIn();
+    shooterSubsystem.shoot(0, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    feederSubsystem.stopMotor();
-    intakeSubsystem.stopMotor();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(frontLimitSwitch.get() == true && backLimitSwitch.get() == true || backLimitSwitch.get() == true){
+    /*
+    System.out.println("THROW BALL COMMAND IS FINISHED WORKED !!!");
+    if(frontLimitSwitch.get() == false && backLimitSwitch.get() == false){
       return true;
     }
+    return false;
+  }*/
     return false;
   }
 }
