@@ -2,20 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Teleop.Unit.Feeder;
+package frc.robot.commands.Teleop.unit.Feeder;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeederSubsystem;
 
 public class GetInFeederCommand extends CommandBase {
 
-  private FeederSubsystem feederSubsystem;
-  private DigitalInput frontLimitSwitch;
+  FeederSubsystem feederSubsystem;
 
   /** Creates a new GetInFeederCommand. */
   public GetInFeederCommand(FeederSubsystem feederSubsystem) {
     this.feederSubsystem = feederSubsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(feederSubsystem);
   }
 
@@ -38,11 +37,6 @@ public class GetInFeederCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*if(frontLimitSwitch.get() == false){
-    return false;
-    }else{
-      return true;
-    }*/
     return false;
   }
 }
