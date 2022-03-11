@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Teleop.Lift;
+package frc.robot.commands.Teleop.unit.Lift;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class c extends CommandBase {
+public class LiftDownCommand extends CommandBase {
   /** Creates a new LiftUpCommand. */
-  public c() {
+  public LiftDownCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
