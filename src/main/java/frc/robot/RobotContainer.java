@@ -7,6 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Autonomous.Drive.PID.DriveStraightEncoderCommand;
+import frc.robot.commands.Autonomous.Drive.TimerBased.TurnLeftXsecond;
+import frc.robot.commands.Autonomous.Drive.TimerBased.TurnRightXsecond;
+import frc.robot.commands.Autonomous.Feeder.TimerBased.GetFeederXSecond;
+import frc.robot.commands.Autonomous.Intake.TimerBased.GetInTakeXSecond;
+import frc.robot.commands.Autonomous.Shooter.PID.ShootFromInTarmacCommand;
+import frc.robot.commands.Autonomous.Shooter.PID.ShootFromOutTarmacCommand;
 import frc.robot.commands.Teleop.binary.GetBallWithFeederCommand;
 import frc.robot.commands.Teleop.binary.ShootWithFeederCommand;
 import frc.robot.commands.Teleop.unit.Drive.TankDriveCommand;
@@ -22,6 +29,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -80,6 +89,37 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+
+    // 2 Ball Autonomous | For lower position
+    /*return new SequentialCommandGroup(
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, false, 3.5170603675), new GetInTakeXSecond(intakeSubsystem, 3)),
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, true, 3.5170603675), new GetFeederXSecond(feederSubsystem, 1)), new TurnRightXsecond(driveSubsystem, 1.5),
+    new ShootFromInTarmacCommand(shooterSubsystem, feederSubsystem));*/
+
+    // 2 Ball Autonomous | For mid position
+    /*return new SequentialCommandGroup(
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, false, 3.5170603675), new GetInTakeXSecond(intakeSubsystem, 3)),
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, true, 3.5170603675), new GetFeederXSecond(feederSubsystem, 1)), new TurnLeftXsecond(driveSubsystem, 1.5),
+    new ShootFromInTarmacCommand(shooterSubsystem, feederSubsystem));*/
+
+    // 2 Ball Autonomous | For higher position
+    /*return new SequentialCommandGroup(
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, false, 3.5170603675), new GetInTakeXSecond(intakeSubsystem, 3)),
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, true, 3.5170603675), new GetFeederXSecond(feederSubsystem, 1)), new TurnRightXsecond(driveSubsystem, 1.5),
+    new ShootFromInTarmacCommand(shooterSubsystem, feederSubsystem));*/
+
+    // 3 Ball Autonomous | For mid position
+    /*return new SequentialCommandGroup(
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, false, 3.5170603675), new GetInTakeXSecond(intakeSubsystem, 3)),
+    new ParallelCommandGroup(new DriveStraight(driveSubsystem, true, 4.5170603675), new GetFeederXSecond(feederSubsystem, 1)), 
+    new TurnLeftXsecond(driveSubsystem, 1.5), new ShootFromInTarmacCommand(shooterSubsystem, feederSubsystem),
+    new TurnRightXsecond(driveSubsystem, 1.5),
+    new DriveStraight(driveSubsystem, false, 16.839), new GetInTakeXSecond(intakeSubsystem, 5), 
+    new DriveStraight(driveSubsystem, true, 16.839), new TurnLeftXsecond(driveSubsystem, 1.5),
+    new ShootFromOutTarmacCommand(shooterSubsystem, feederSubsystem));*/
+
+
+
     return null;
   }
 }
