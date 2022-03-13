@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class FeederSubsystem extends SubsystemBase {
 
-  Victor feeder = new Victor(6);
+  Victor feeder = new Victor(Constants.FEEDER_CONSTANTS.FEEDER_MOTOR_PIN);
   /** Creates a new FeederSubsystem. */
   public FeederSubsystem() {}
 
