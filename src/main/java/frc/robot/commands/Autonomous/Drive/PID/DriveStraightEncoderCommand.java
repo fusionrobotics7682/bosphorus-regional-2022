@@ -38,9 +38,9 @@ public class DriveStraightEncoderCommand extends CommandBase {
   @Override
   public void execute() {
     double lastRightError = driveSubSystem.getRightEncoderDistance() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
-    double rightEncoder = driveSubSystem.getRightEncoderDistance();
+    double rightEncoderPosition = driveSubSystem.getRightEncoderDistance() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
 
-    double sensorPosition = rightEncoder * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
+    double sensorPosition = rightEncoderPosition;
 
     double lastTimeStamp = 0;
     double dt = Timer.getFPGATimestamp() - lastTimeStamp;
@@ -56,9 +56,11 @@ public class DriveStraightEncoderCommand extends CommandBase {
       outputSpeed*=-1;
     }
 
+    // set motors
     driveSubSystem.setLeftMotorGroupSpeed(outputSpeed*0.25);
     driveSubSystem.setRightMotorGroupSpeed(outputSpeed*0.25);
 
+    // Pass last values
     lastRightError = error;
     lastTimeStamp = Timer.getFPGATimestamp();
   }
