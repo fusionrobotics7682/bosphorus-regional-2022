@@ -20,6 +20,7 @@ public class FeederSubsystem extends SubsystemBase {
   }
 
   // Getting the ball
+  
   public void getIn(){
     feeder.set(Constants.FEEDER_CONSTANTS.FEEDER_SPEED);
   }

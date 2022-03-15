@@ -16,19 +16,19 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TwoBallPathCommand extends CommandBase {
+public class ThreeBallMidPathCommand extends CommandBase {
 
-  String trajectoryJSON = "PathWeaver/Paths/rapid_lower.json";
+  String trajectoryJSON = "path_outputs/YourPath.wpilib.json";
   Trajectory trajectory = new Trajectory();
-  RamseteCommand ramseteCommand;
 
   DriveSubsystem driveSubsystem;
 
-  /** Creates a new TwoBallPathCommand. */
-  public TwoBallPathCommand(DriveSubsystem driveSubsystem) {
+  /** Creates a new ThreeBallMidPathCommand. */
+  public ThreeBallMidPathCommand() {
     this.driveSubsystem = driveSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
@@ -37,46 +37,20 @@ public class TwoBallPathCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    ramseteCommand =
-    new RamseteCommand(
-        trajectory,
-        driveSubsystem::getPose,
-        new RamseteController(2.1, 0.8),
-        new SimpleMotorFeedforward(
-            Constants.DRIVE_CONSTANTS.KS_VOLTS,
-            Constants.DRIVE_CONSTANTS.KV_VOLTS
-            ),
-        driveSubsystem.getKinematics(),
-        driveSubsystem::getWheelSpeeds,
-        new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
-        new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
-        // RamseteCommand passes volts to the callback
-        driveSubsystem::tankDriveVolts,
-        driveSubsystem);
-
-        driveSubsystem.resetOdometry(trajectory.getInitialPose());
+ 
 
   }
 
-  public Command getRamseteCommand(){
-    return ramseteCommand;
-  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {     
+  public void execute() {
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

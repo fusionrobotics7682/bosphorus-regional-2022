@@ -43,7 +43,7 @@ public class MidThreeBallCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    midThreeBallCommand = new SequentialCommandGroup(
+      midThreeBallCommand = new SequentialCommandGroup(
       new ParallelCommandGroup(new DriveStraightEncoderCommand(driveSubsystem, false, 3.5170603675), new GetInTakeXSecond(intakeSubsystem, 3)),
       new ParallelCommandGroup(new DriveStraightEncoderCommand(driveSubsystem, true, 4.5170603675), new GetFeederXSecond(feederSubsystem, 1)), 
       new TurnLeftXsecond(driveSubsystem, 1.5), new ShootFromInTarmacCommand(shooterSubsystem, feederSubsystem),

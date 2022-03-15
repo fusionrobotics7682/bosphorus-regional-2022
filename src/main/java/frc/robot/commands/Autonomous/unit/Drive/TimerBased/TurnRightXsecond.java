@@ -15,8 +15,6 @@ public class TurnRightXsecond extends CommandBase {
 
   private double seconds = 0;
 
-
-
   /** Creates a new TurnXsecond. */
   public TurnRightXsecond(DriveSubsystem driveSubsystem, double seconds) {
     this.driveSubSystem = driveSubSystem;

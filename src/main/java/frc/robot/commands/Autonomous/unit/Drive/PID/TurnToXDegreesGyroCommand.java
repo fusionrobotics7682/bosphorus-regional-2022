@@ -34,12 +34,12 @@ public class TurnToXDegreesGyroCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gyroError = gyroSetpoint - driveSubSystem.getYaw();
+    gyroError = gyroSetpoint - driveSubSystem.getAngle  ();
     
     outputSpeed = gyroError * Constants.DRIVE_CONSTANTS.GYRO_KP;
   
     driveSubSystem.setLeftMotorGroupSpeed(outputSpeed*0.5);
-    driveSubSystem.setRightMotorGroupSpeed(outputSpeed*0.43);
+    driveSubSystem.setRightMotorGroupSpeed(-outputSpeed*0.43);
   }
 
   // Called once the command ends or is interrupted.

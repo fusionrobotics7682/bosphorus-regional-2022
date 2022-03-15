@@ -6,17 +6,35 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
+import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,18 +44,23 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Basic Victors
   Victor frontLeft = new Victor(Constants.DRIVE_CONSTANTS.FRONT_LEFT_MOTOR_PIN);
- // Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
+  Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
   Victor rearLeft = new Victor(Constants.DRIVE_CONSTANTS.REAR_LEFT_MOTOR_PIN);
- // Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
+  Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
 
   // Motor Groups
-  MotorControllerGroup leftMotorGroup = new MotorControllerGroup(frontLeft, rearLeft);
-  MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearLeft);
+  public MotorControllerGroup leftMotorGroup = new MotorControllerGroup(rearLeft);
+  public MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearLeft);
 
-  // Sensors
-  Encoder leftEncoder = new Encoder(10, 20);
+  // Sensors 10-20
+  Encoder leftEncoder = new Encoder(Constants.DRIVE_CONSTANTS.LEFT_DRIVE_ENCODER_A_CHANNEL, Constants.DRIVE_CONSTANTS.LEFT_DRIVE_ENCODER_B_CHANNEL);
   Encoder rightEncoder = new Encoder(Constants.DRIVE_CONSTANTS.RIGHT_DRIVE_ENCODER_A_CHANNEL, Constants.DRIVE_CONSTANTS.RIGHT_DRIVE_ENCODER_B_CHANNEL);
   AHRS navx = new AHRS(Constants.DRIVE_CONSTANTS.NAVX_SPI_PORT);
+  AnalogGyro gyro = new AnalogGyro(0);
+  
+  // SIM sensors
+  EncoderSim leftEncoderSim= new EncoderSim(leftEncoder);
+  EncoderSim rightEncoderSim= new EncoderSim(rightEncoder);
 
   // PID Controllers
   PIDController leftPIDController = new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD);
@@ -55,11 +78,25 @@ public class DriveSubsystem extends SubsystemBase {
   // Controller
   Joystick joystick = new Joystick(0);
 
-  // Odometry, kinematics and Pose Classes for trajectory
+  //Odometry, kinematics and Pose Classes for trajectory
   Pose2d pose = new Pose2d();
-  private DifferentialDriveOdometry odometry;
+  Rotation2d rotation2d = new Rotation2d();
+  private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(rotation2d, new Pose2d(new Translation2d(8,8), new Rotation2d(5,-3.5)));
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.DRIVE_CONSTANTS.kTRACK_WIDTH);
+
+  final double KvLinear = 1.98;
+  final double KaLinear = 0.2;
+  final double KvAngular = 1.5;
+  final double KaAngular = 0.3;
+    
   
+// Create the simulation model of our drivetrain.
+private DifferentialDrivetrainSim driveSim = DifferentialDrivetrainSim.createKitbotSim(
+  KitbotMotor.kDualCIMPerSide, // 2 CIMs per side.
+  KitbotGearing.k10p71,        // 10.71:1
+  KitbotWheelSize.SixInch,     // 6" diameter wheels.
+  null                         // No measurement noise.
+);
 
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
@@ -80,7 +117,26 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometry.update(navx.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+    odometry.update(navx.getRotation2d() , leftEncoderSim.getDistance(), rightEncoderSim.getDistance());
+    field.setRobotPose(odometry.getPoseMeters());
+    SmartDashboard.putData("Field", field);
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    driveSim.setInputs(leftMotorGroup.get() * RobotController.getInputVoltage(),
+    rightMotorGroup.get() * RobotController.getInputVoltage());
+
+    driveSim.update(0.02);
+    odometry.update(navx.getRotation2d() , leftEncoderSim.getDistance(), rightEncoderSim.getDistance());
+    field.setRobotPose(driveSim.getPose());
+    SmartDashboard.putData("Field", field);
+
+    // Update all of our sensors.
+    leftEncoderSim.setDistance(driveSim.getLeftPositionMeters());
+    leftEncoderSim.setRate(driveSim.getLeftVelocityMetersPerSecond());
+    rightEncoderSim.setDistance(driveSim.getRightPositionMeters());
+    rightEncoderSim.setRate(driveSim.getRightVelocityMetersPerSecond());
   }
 
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
@@ -106,7 +162,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(){
-    differentialDrive.tankDrive(joystick.getRawAxis(5)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_LEFT_SPEED, joystick.getRawAxis(1)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_RIGHT_SPEED);
+   differentialDrive.tankDrive(joystick.getRawAxis(1)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_LEFT_SPEED, -joystick.getRawAxis(5)*Constants.DRIVE_CONSTANTS.TANK_DRIVE_RIGHT_SPEED);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -160,6 +216,10 @@ public class DriveSubsystem extends SubsystemBase {
     return navx.getYaw();
   }
 
+  public double getAngle(){
+    return driveSim.getHeading().getDegrees();
+  }
+
   public double getTurnRate() {
     return -navx.getRate();
   }
@@ -178,8 +238,6 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
     odometry.resetPosition(pose, navx.getRotation2d());
   }   
-
-
 
   public void stop(){
     differentialDrive.stopMotor();

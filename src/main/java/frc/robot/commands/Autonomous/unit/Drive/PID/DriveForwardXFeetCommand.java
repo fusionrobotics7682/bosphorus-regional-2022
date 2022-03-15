@@ -9,21 +9,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveStraightEncoderCommand extends CommandBase {
+public class DriveForwardXFeetCommand extends CommandBase {
 
-
-  /** Creates a new DriveForward. */
   DriveSubsystem driveSubSystem;
 
   double feetSetpoint = 0;
   double outputSpeed = 0;
   double lastRightError = 0;
-  boolean isBack = false;
-
-  public DriveStraightEncoderCommand(DriveSubsystem driveSubSystem, boolean isBack, double feetSetpoint) {
+ 
+  public DriveForwardXFeetCommand(DriveSubsystem driveSubSystem, double feetSetpoint) {
       this.feetSetpoint = feetSetpoint;
       this.driveSubSystem = driveSubSystem;
-      this.isBack = isBack;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubSystem);
   }
@@ -38,35 +34,32 @@ public class DriveStraightEncoderCommand extends CommandBase {
   public void execute() {
     
     double rightEncoderPosition = driveSubSystem.getRightEncoderDistance() * Constants.DRIVE_CONSTANTS.K_DRIVE_TICK_2_FEET;
-
+ 
     double lastTimeStamp = 0;
     double dt = Timer.getFPGATimestamp() - lastTimeStamp;
-
+ 
     // calculations
     double error = feetSetpoint - rightEncoderPosition;
     double errorRate = (error-lastRightError) / dt;
     
     outputSpeed = Constants.DRIVE_CONSTANTS.KP * error + Constants.DRIVE_CONSTANTS.KD * errorRate;
-
-    if(isBack){
-      outputSpeed*=-1;
-    }
-
+ 
+ 
     // set motors
     driveSubSystem.setLeftMotorGroupSpeed(outputSpeed*0.25);
     driveSubSystem.setRightMotorGroupSpeed(outputSpeed*0.25);
-
+ 
     // Pass last values
     lastRightError = error;
     lastTimeStamp = Timer.getFPGATimestamp();
   }
-
+ 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveSubSystem.stop();
   }
-
+ 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

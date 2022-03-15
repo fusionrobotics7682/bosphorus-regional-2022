@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -11,7 +14,8 @@ import frc.robot.commands.Autonomous.polymorphic.ThreeBallScenarios.MidThreeBall
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.LowerTwoBallCommand;
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.MidTwoBallCommand;
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.UpperTwoBallCommand;
-import frc.robot.commands.Path.TwoBallPathCommand;
+import frc.robot.commands.Autonomous.unit.Drive.PID.TurnToXDegreesGyroCommand;
+import frc.robot.commands.Path.TwoBallLowerPathCommand;
 import frc.robot.commands.Teleop.unit.Drive.*;
 import frc.robot.commands.Teleop.unit.Feeder.*;
 import frc.robot.commands.Teleop.unit.Intake.*;
@@ -25,6 +29,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -48,7 +53,7 @@ public class RobotContainer {
   // Path Commands
 
       // Two Ball Path Commands
-      TwoBallPathCommand twoBallPathCommand = new TwoBallPathCommand(driveSubsystem);
+      TwoBallLowerPathCommand twoBallPathCommand = new TwoBallLowerPathCommand(driveSubsystem);
 
   // Gyro|Encoder Commands
 
@@ -64,10 +69,20 @@ public class RobotContainer {
   Joystick joystick = new Joystick(0);
 
 
+
+  DifferentialDriveVoltageConstraint autoVoltageConstraint =
+  new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(
+          Constants.DRIVE_CONSTANTS.KS_VOLTS,
+          Constants.DRIVE_CONSTANTS.KV_VOLTS),
+      driveSubsystem.getKinematics(),
+      10);
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    driveSubsystem.setDefaultCommand(new TankDriveCommand(driveSubsystem));
+    driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(driveSubsystem));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -81,6 +96,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Unit process
+   
     new JoystickButton(joystick, 1).whileActiveContinuous(new GetInFeederCommand(feederSubsystem));
     new JoystickButton(joystick, 2).whileActiveContinuous(new GetOutFeederCommand(feederSubsystem));
     new JoystickButton(joystick, 3).whileActiveContinuous(new GetInTakeCommand(intakeSubsystem));
@@ -102,10 +118,68 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    return midThreeBallCommand.getCommand();
+     
 
 
-    
+    //    new DriveLeftXFeetEncoderCommand()
+       //new DriveStraightEncoderCommand(driveSubsystem,) 
+/*
 
-    return lowerTwoBallCommand.getCommand();
-  }
+ DifferentialDriveVoltageConstraint autoVoltageConstraint =
+    new DifferentialDriveVoltageConstraint(
+        new SimpleMotorFeedforward(
+            Constants.DRIVE_CONSTANTS.KS_VOLTS,
+            Constants.DRIVE_CONSTANTS.KV_VOLTS
+            ),
+        driveSubsystem.getKinematics(),
+        10);
+// Create config for trajectory
+TrajectoryConfig config =
+    new TrajectoryConfig(
+            AutoConstants.kMaxSpeedMetersPerSecond,
+            AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics)
+        // Apply the voltage constraint
+        .addConstraint(autoVoltageConstraint);
+
+// An example trajectory to follow.  All units in meters.
+Trajectory exampleTrajectory =
+    TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        // Pass config
+        config);
+
+RamseteCommand ramseteCommand =
+    new RamseteCommand(
+        exampleTrajectory,
+        m_robotDrive::getPose,
+        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+            DriveConstants.ksVolts,
+            DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        m_robotDrive::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_robotDrive::tankDriveVolts,
+        m_robotDrive);
+
+// Reset odometry to the starting pose of the trajectory.
+m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
+// Run path following command, then stop at the end.
+return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
+}*/
+      }
+
+
 }
