@@ -3,10 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /* Knowlodge of Compressor and DoubleSolenoid
@@ -14,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 */
 public class LiftSubsystem extends SubsystemBase {
 
-  public Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-  public DoubleSolenoid solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+ // public Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+ // public DoubleSolenoid solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
 
   /** Creates a new LiftSubsystem. */
   public LiftSubsystem() {
@@ -27,18 +23,18 @@ public class LiftSubsystem extends SubsystemBase {
   }
 
   public void enableCompressor() {
-    compressor.enableDigital();
+    //compressor.enableDigital();
   }
 
   public void disableCompressor() {
-    compressor.disable();
+    //compressor.disable();
   }
 
   public void liftUp() {
-    solenoid.set(DoubleSolenoid.Value.kForward);
+   // solenoid.set(DoubleSolenoid.Value.kForward);
   }
 
   public void liftDown() {
-    solenoid.set(DoubleSolenoid.Value.kReverse);
+   // solenoid.set(DoubleSolenoid.Value.kReverse);
   }
 }

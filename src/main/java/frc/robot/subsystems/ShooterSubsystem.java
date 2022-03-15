@@ -14,15 +14,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   Timer timer = new Timer();
   
+  
   Victor frontShooter = new Victor(Constants.SHOOTER_CONSTANTS.FRONT_SHOOTER_MOTOR_PIN);
   Victor rearShooter = new Victor(Constants.SHOOTER_CONSTANTS.REAR_SHOOTER_MOTOR_PIN);
 
-  Encoder frontEncoder = new Encoder(Constants.SHOOTER_CONSTANTS.FRONT_ENCODER_CHANNEL_A, Constants.SHOOTER_CONSTANTS.FRONT_ENCODER_CHANNEL_B);
+  Encoder frontEncoder = new Encoder(8, 9);
   Encoder rearEncoder = new Encoder(Constants.SHOOTER_CONSTANTS.REAR_ENCODER_CHANNEL_A, Constants.SHOOTER_CONSTANTS.REAR_ENCODER_CHANNEL_B);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    rearShooter.setInverted(true);
+   // rearShooter.setInverted(true);
     frontShooter.setInverted(true);
   }
 
@@ -49,7 +50,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getFrontEncoder() {
-    return frontEncoder.get();
+   // return frontEncoder.get();
+   return 0.0;
   }
   
   public double getRearEncoder() {
@@ -61,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    frontEncoder.reset();
+   // frontEncoder.reset();
     rearEncoder.reset();
   }
 

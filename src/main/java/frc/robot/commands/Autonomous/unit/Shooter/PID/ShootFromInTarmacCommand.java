@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Autonomous.Shooter.PID;
+package frc.robot.commands.Autonomous.unit.Shooter.PID;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootFromOutTarmacCommand extends CommandBase {
+public class ShootFromInTarmacCommand extends CommandBase {
 
   ShooterSubsystem shooterSubsystem;
   FeederSubsystem feederSubsystem;
 
   /** Creates a new ShootToUpperHubCommand. */
-  public ShootFromOutTarmacCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
+  public ShootFromInTarmacCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
     this.feederSubsystem = feederSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,8 +30,8 @@ public class ShootFromOutTarmacCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.shoot(0.5, 0.7);
-    if(shooterSubsystem.getFrontEncoder() < 10000 && shooterSubsystem.getRearEncoder() < 6000){
+    shooterSubsystem.shoot(0.3, 0.5);
+    if(shooterSubsystem.getFrontEncoder() < 5000 && shooterSubsystem.getRearEncoder() < 3000){
       feederSubsystem.getIn();
     }
   }
