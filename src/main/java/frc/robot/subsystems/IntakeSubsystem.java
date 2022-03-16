@@ -4,11 +4,17 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
+
+  Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+  DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
 
   Victor intake = new Victor(Constants.INTAKE_CONSTANTS.INTAKE_MOTOR_PIN);
 
@@ -22,11 +28,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void getIn(){
     intake.set(1);
+    doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void getInTake(){
+    doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void getOut(){
     intake.setInverted(true);
-    intake.set(Constants.FEEDER_CONSTANTS.FEEDER_SPEED);
+    intake.set(1);
+    //doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   public void stopMotor(){

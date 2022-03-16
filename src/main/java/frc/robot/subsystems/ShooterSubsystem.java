@@ -36,6 +36,14 @@ public class ShooterSubsystem extends SubsystemBase {
   //  frontShooter.set(frontSpeed);
   }
 
+  public void setRearSpeed(double rearSpeed){
+    rearShooter.set(rearSpeed);
+  }
+
+  public void setFrontSpeed(double frontSpeed){
+    frontShooter.set(frontSpeed);
+  }
+
   public void getInSlower(){
     rearShooter.setInverted(true);
    // frontShooter.setInverted(true);

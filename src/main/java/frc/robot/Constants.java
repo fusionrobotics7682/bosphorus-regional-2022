@@ -79,6 +79,15 @@ public final class Constants {
         public static final int REAR_ENCODER_CHANNEL_A = 2;
         public static final int REAR_ENCODER_CHANNEL_B = 6;
 
+        public static final double FRONT_SPEED = 0.6;
+        public static final double REAR_SPEED = 0.6;
+
+        public static final double FRONT_VELOCITY_SETPOINT = 8;
+        public static final double REAR_VELOCITY_SETPOINT = 6;
+
+        public static final double FRONT_VELOCITY_P = 0;
+        public static final double REAR_VELOCITY_P = 0;
+
         public static double SHOOTER_SPEED = 0.7;
     }
 

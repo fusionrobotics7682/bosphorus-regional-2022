@@ -27,13 +27,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Basic Victors
   Victor frontLeft = new Victor(Constants.DRIVE_CONSTANTS.FRONT_LEFT_MOTOR_PIN);
- // Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
+  Victor frontRight = new Victor(Constants.DRIVE_CONSTANTS.FRONT_RIGHT_MOTOR_PIN);
   Victor rearLeft = new Victor(Constants.DRIVE_CONSTANTS.REAR_LEFT_MOTOR_PIN);
- // Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
+  Victor rearRight = new Victor(Constants.DRIVE_CONSTANTS.REAR_RIGHT_MOTOR_PIN);
 
   // Motor Groups
   MotorControllerGroup leftMotorGroup = new MotorControllerGroup(frontLeft, rearLeft);
-  MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rearLeft);
+  MotorControllerGroup rightMotorGroup = new MotorControllerGroup(frontRight, rearRight);
 
   // Sensors
   Encoder leftEncoder = new Encoder(10, 20);
@@ -82,6 +82,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     odometry.update(navx.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+    field.setRobotPose(odometry.getPoseMeters());
+
+
+    // Write value to Dashboard
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.getDistance());
+    SmartDashboard.putNumber("Gyro", navx.getYaw());
+    SmartDashboard.putData("Field", field);
   }
 
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {

@@ -20,7 +20,7 @@ import frc.robot.commands.Autonomous.polymorphic.ThreeBallScenarios.MidThreeBall
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.LowerTwoBallCommand;
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.MidTwoBallCommand;
 import frc.robot.commands.Autonomous.polymorphic.TwoBallScenarios.UpperTwoBallCommand;
-import frc.robot.commands.Path.TwoBallLowerPathCommand;
+import frc.robot.commands.Path.two_ball_path.TwoBallLowerPathCommand;
 import frc.robot.commands.Teleop.binary.*;
 import frc.robot.commands.Teleop.unit.Drive.ArcadeDriveCommand;
 import frc.robot.commands.Teleop.unit.Feeder.GetInFeederCommand;
@@ -55,28 +55,35 @@ public class RobotContainer {
   private RobotContainer robotContainer;
 
   RamseteCommand get1ballTrajectoryCommand;
-  RamseteCommand getthirdballTrajectoryCommand;
+  RamseteCommand get2ballTrajectoryCommand;
+  RamseteCommand get3ballCommand;
   RamseteCommand throwfirstballsCommand;
   RamseteCommand throwsecondballsCommand;
+  RamseteCommand throwthirdballscommand;
 
   String get1ball = "path_outputs/output/get1Ball.wpilib.json";
   Trajectory get1ballTrajectory = new Trajectory();
 
-  String getthirdball = "path_outputs/output/getthirdball.wpilib.json";
-  Trajectory getthirdballTrajectory = new Trajectory();
-
   String throwfirstballs = "path_outputs/output/throwfirstballs.wpilib.json";
   Trajectory throwfirstballsTrajectory = new Trajectory();
+
+  String get2ball = "path_outputs/output/getthirdball.wpilib.json";
+  Trajectory getthirdballTrajectory = new Trajectory();
 
   String throwsecondballs = "path_outputs/output/throwsecondballs.wpilib.json";
   Trajectory throwsecondballsTrajectory = new Trajectory();
 
+  String get3ball = "path_outputs/output/getfiveBall.wpilib.json";
+  Trajectory get3ballTrajectory = new Trajectory();
+
+  String throwthirdballs = "path_outputs/output/throwthirdballs.wpilib.json";
+  Trajectory throwthirdballsTrajectory = new Trajectory();
   // Commands
 
   // Path Commands
 
       // Two Ball Path Commands
-      TwoBallLowerPathCommand twoBallPathCommand = new TwoBallLowerPathCommand();
+      TwoBallLowerPathCommand twoBallPathCommand = new TwoBallLowerPathCommand(driveSubsystem);
 
   // Gyro|Encoder Commands
 
@@ -112,19 +119,19 @@ public class RobotContainer {
      } catch (IOException ex) {
         DriverStation.reportError("Unable to open trajectory: " + get1ball, ex.getStackTrace());
      }
-  
-     try {
-      Path getthirdballpath = Filesystem.getDeployDirectory().toPath().resolve(getthirdball);
-      get1ballTrajectory = TrajectoryUtil.fromPathweaverJson(getthirdballpath);
-   } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + getthirdball, ex.getStackTrace());
-   }
-  
+
      try {
       Path throwfirstballsPath = Filesystem.getDeployDirectory().toPath().resolve(throwfirstballs);
       get1ballTrajectory = TrajectoryUtil.fromPathweaverJson(throwfirstballsPath);
    } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + throwfirstballs, ex.getStackTrace());
+   }
+  
+     try {
+      Path get2ballpath = Filesystem.getDeployDirectory().toPath().resolve(get2ball);
+      get1ballTrajectory = TrajectoryUtil.fromPathweaverJson(get2ballpath);
+   } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + get2ball, ex.getStackTrace());
    }
   
      try {
@@ -134,6 +141,19 @@ public class RobotContainer {
       DriverStation.reportError("Unable to open trajectory: " + throwsecondballs, ex.getStackTrace());
    }
 
+      try {
+        Path get3ballPath = Filesystem.getDeployDirectory().toPath().resolve(get3ball);
+        throwsecondballsTrajectory = TrajectoryUtil.fromPathweaverJson(get3ballPath);
+    } catch (IOException ex) {
+        DriverStation.reportError("Unable to open trajectory: " + throwsecondballs, ex.getStackTrace());
+    }
+
+    try {
+      Path throwthirdballsPath = Filesystem.getDeployDirectory().toPath().resolve(throwthirdballs);
+      throwsecondballsTrajectory = TrajectoryUtil.fromPathweaverJson(throwthirdballsPath);
+  } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + throwsecondballs, ex.getStackTrace());
+  }
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -170,7 +190,7 @@ public class RobotContainer {
     //    new DriveLeftXFeetEncoderCommand()
        //new DriveStraightEncoderCommand(driveSubsystem,);
               // try this trajectoryJSON after exampleTrajectory
-                      get1ballTrajectoryCommand =
+              get1ballTrajectoryCommand =
                       new RamseteCommand(
                         get1ballTrajectory,
                       driveSubsystem::getPose,
@@ -188,7 +208,7 @@ public class RobotContainer {
                       driveSubsystem);
       
                       // try this trajectoryJSON after exampleTrajectory
-                      getthirdballTrajectoryCommand =
+                      throwfirstballsCommand =
                       new RamseteCommand(
                       getthirdballTrajectory,
                       driveSubsystem::getPose,
@@ -206,7 +226,7 @@ public class RobotContainer {
                       driveSubsystem);
       
                               // try this trajectoryJSON after exampleTrajectory
-                      throwfirstballsCommand =
+                      get2ballTrajectoryCommand =
                       new RamseteCommand(
                         throwfirstballsTrajectory,
                       driveSubsystem::getPose,
@@ -241,7 +261,40 @@ public class RobotContainer {
                       driveSubsystem::tankDriveVolts,
                       driveSubsystem);
 
-                      return get1ballTrajectoryCommand.andThen(throwfirstballsCommand.andThen(getthirdballTrajectoryCommand.andThen(throwsecondballsCommand))) ;
+                      get3ballCommand =
+                      new RamseteCommand(
+                      throwsecondballsTrajectory,
+                      driveSubsystem::getPose,
+                      new RamseteController(2.1, 0.8),
+                      new SimpleMotorFeedforward(
+                          Constants.DRIVE_CONSTANTS.KS_VOLTS,
+                          Constants.DRIVE_CONSTANTS.KV_VOLTS
+                          ),
+                      driveSubsystem.getKinematics(),
+                      driveSubsystem::getWheelSpeeds,
+                      new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
+                      new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
+                      // RamseteCommand passes volts to the callback
+                      driveSubsystem::tankDriveVolts,
+                      driveSubsystem);
+
+                      throwthirdballscommand =
+                      new RamseteCommand(
+                      throwsecondballsTrajectory,
+                      driveSubsystem::getPose,
+                      new RamseteController(2.1, 0.8),
+                      new SimpleMotorFeedforward(
+                          Constants.DRIVE_CONSTANTS.KS_VOLTS,
+                          Constants.DRIVE_CONSTANTS.KV_VOLTS
+                          ),
+                      driveSubsystem.getKinematics(),
+                      driveSubsystem::getWheelSpeeds,
+                      new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
+                      new PIDController(Constants.DRIVE_CONSTANTS.KP, Constants.DRIVE_CONSTANTS.KI, Constants.DRIVE_CONSTANTS.KD),
+                      // RamseteCommand passes volts to the callback
+                      driveSubsystem::tankDriveVolts,
+                      driveSubsystem);
+                      return get1ballTrajectoryCommand.andThen(throwfirstballsCommand.andThen(get2ballTrajectoryCommand.andThen(throwsecondballsCommand.andThen(get3ballCommand.andThen(throwthirdballscommand))))) ;
 
   }
 }
