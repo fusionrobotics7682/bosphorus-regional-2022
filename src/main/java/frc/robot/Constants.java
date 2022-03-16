@@ -59,12 +59,12 @@ public final class Constants {
       public static double kMaxAccelerationMetersPerSecondSquared = 12;
     }
     public static final class INTAKE_CONSTANTS{
-        public static final int INTAKE_MOTOR_PIN = 5;
+        public static final int INTAKE_MOTOR_PIN = 4;
         public static final double INTAKE_SPEED = 0.7;
     }
 
     public static final class FEEDER_CONSTANTS{
-        public static final int FEEDER_MOTOR_PIN = 6;
+        public static final int FEEDER_MOTOR_PIN = 5;
         public static final double FEEDER_SPEED = 0.7;
     }
 

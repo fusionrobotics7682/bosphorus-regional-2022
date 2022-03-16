@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     rearShooter.setInverted(true);
-    frontShooter.setInverted(true);
+   // frontShooter.setInverted(true);
   }
 
   @Override
@@ -33,19 +33,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shoot(double rearSpeed, double frontSpeed) {
     rearShooter.set(rearSpeed);
-    frontShooter.set(frontSpeed);
+  //  frontShooter.set(frontSpeed);
   }
 
   public void getInSlower(){
     rearShooter.setInverted(true);
-    frontShooter.setInverted(true);
+   // frontShooter.setInverted(true);
     rearShooter.set(0.75);
-    frontShooter.set(0.75);
+   // frontShooter.set(0.75);
   }
 
   public void stopMotor() {
     rearShooter.set(0);
-    frontShooter.set(0);
+   // frontShooter.set(0);
   }
 
   public double getFrontEncoder() {

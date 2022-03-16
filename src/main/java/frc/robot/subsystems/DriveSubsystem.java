@@ -9,6 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -57,7 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Odometry, kinematics and Pose Classes for trajectory
   Pose2d pose = new Pose2d();
-  private DifferentialDriveOdometry odometry;
+  private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d(), pose);
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.DRIVE_CONSTANTS.kTRACK_WIDTH);
   
 
