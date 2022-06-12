@@ -1,4 +1,4 @@
-package frc.robot.commands.Teleop.binary;
+package frc.robot.commands.Teleop.Binary;
 
 
 
